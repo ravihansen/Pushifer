@@ -1,0 +1,112 @@
+﻿<form role="form" class="form-horizontal">
+    <h3>Abonèr på varsler</h3>
+    <br />
+
+    <fieldset>
+        <legend>Type varsel</legend>
+        <div class="form-group">
+            <div class="col-sm-offset-3">
+                <span><b>Flomvarsel</b></span>
+                <div ng-repeat="(floodLevel, enabled) in floodWarning">
+                    <div class="col-md-2">
+                        <div class="checkbox">
+                            <input type="checkbox" id="flood{{floodLevel}}" ng-model="floodWarning[floodLevel]" /> <!-- Must seperate checkbox and label du to awesome-bootstrap-checkbox.css-->
+                            <label for="flood{{floodLevel}}">{{floodLevel}}</label>
+                        </div>
+                    </div>
+                </div>
+                <p style="color: lightblue">{{floodWarning}}</p>
+            </div>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <div class="col-sm-offset-3">
+                <span><b>Jordskredvarsel</b></span>
+                <div ng-repeat="(landslideLevel, enabled) in landslideWarning">
+                    <div class="col-md-2">
+                        <div class="checkbox">
+                            <input type="checkbox" id="landslide-{{landslideLevel}}" ng-model="landslideWarning[landslideLevel]" />
+                            <label for="landslide-{{landslideLevel}}">{{landslideLevel}}</label>
+                        </div>
+                    </div>
+                </div>
+                <p style="color: lightblue">{{landslideWarning}}</p>
+            </div>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <div class="col-sm-offset-3">
+                <span><b>Snøskredvarsel</b></span>
+                <div ng-repeat="(avalancheLevel, enabled) in avalancheWarning">
+                    <div class="col-md-2">
+                        <div class="checkbox">
+                            <input type="checkbox" id="avalanche-{{avalancheLevel}}" ng-model="avalancheWarning[avalancheLevel]" />
+                            <label for="avalanche-{{avalancheLevel}}">{{avalancheLevel}}</label>
+                        </div>
+                    </div>
+                </div>
+                <p style="color: lightblue">{{avalancheWarning}}</p>
+            </div>
+        </div>
+        <br />
+    </fieldset>
+
+    <fieldset>
+        <legend>Område</legend>
+        <div class="form-group">
+            <label for="county" class="col-sm-3 control-label">Fylke</label>
+            <div class="col-sm-9">
+                <select name="county" id="county" class="form-control"
+                        ng-model="message.county" ng-options="x for x in county"></select>
+            </div>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <label for="council" class="col-sm-3 control-label">Kommune</label>
+            <div class="col-sm-9">
+                <select name="council" id="council" class="form-control"
+                        ng-model="message.council" ng-options="x for x in council"></select>
+            </div>
+        </div>
+        <br />
+    </fieldset>
+
+    <fieldset>
+        <legend>Periode</legend>
+    </fieldset>
+
+    <fieldset>
+        <legend>Utsendelse</legend>
+        <div class="form-group">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-9">
+                <span><b>Utsendelse</b></span>
+                <div ng-repeat="(message,enabled) in messagetype">
+                    <div class="checkbox">
+                        <input id="messagetype-{{message}}" type="checkbox" ng-model="messagetype[message]" />
+                        <label for="messagetype-{{message}}">{{message}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </fieldset>
+
+
+
+
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            <input type="button" class="btn btn-default" value="Avbryt"
+                   ng-click="cancelForm()" />
+
+            <input type="submit" class="btn btn-primary" value="Send"
+                   ng-click="submitForm()" />
+        </div>
+    </div>
+
+</form>
