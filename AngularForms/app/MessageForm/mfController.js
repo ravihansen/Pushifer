@@ -1,22 +1,25 @@
 ﻿angularFormsApp.controller('mfController',
-    function mfController($scope, DataService) {
+    function mfController($scope, AreaFactory, DataService) {
         $scope.message = DataService.message;
 
         $scope.editableMessage = angular.copy($scope.message);
 
-        $scope.floodWarning = { // flomvarsel
+        $scope.floodWarning = {
+            // flomvarsel
             Gult: false,
             Orange: false,
             Rød: false
         };
 
-        $scope.landslideWarning = { // jordskredvarsel
+        $scope.landslideWarning = {
+            // jordskredvarsel
             Gult: false,
             Orange: false,
             Rød: false
         };
 
-        $scope.avalancheWarning = { // snøskredvarsel
+        $scope.avalancheWarning = {
+            // snøskredvarsel
             Gult: false,
             Orange: false,
             Rød: false
@@ -29,11 +32,142 @@
         };
 
 
-        $scope.county = [
-            "Oslo",
-            "Akershus",
-            "Østfold"
+        $scope.counties = [
+            {
+                Id: 01,
+                name: "Østfold",
+                checked: false
+            },
+            {
+                Id: 02,
+                name: "Akershus",
+                checked: false
+            },
+            {
+                Id: 03,
+                name: "Oslo",
+                checked: false
+            },
+            {
+                Id: 04,
+                name: "Hedemark",
+                checked: false
+            },
+            {
+                Id: 05,
+                name: "Oppland",
+                checked: false
+            },
+            {
+                Id: 06,
+                name: "Buskerud",
+                checked: false
+            },
+            {
+                Id: 07,
+                name: "Vestfold",
+                checked: false
+            },
+            {
+                Id: 08,
+                name: "Telemark",
+                checked: false
+            },
+            {
+                Id: 09,
+                name: "Aust-Agder",
+                checked: false
+            },
+            {
+                Id: 10,
+                name: "Vest-Agder",
+                checked: false
+            },
+            {
+                Id: 11,
+                name: "Rogaland",
+                checked: false
+            },
+            {
+                Id: 12,
+                name: "Hordaland",
+                checked: false
+            },
+            {
+                Id: 14,
+                name: "Sogn og Fjordane",
+                checked: false
+            },
+            {
+                Id: 15,
+                name: "Møre og Romsdal ",
+                checked: false
+            },
+            {
+                Id: 16,
+                name: "Sør-Trøndelag ",
+                checked: false
+            },
+            {
+                Id: 17,
+                name: "Nord-Trøndelag ",
+                checked: false
+            },
+            {
+                Id: 18,
+                name: "Nordland",
+                checked: false
+            },
+            {
+                Id: 19,
+                name: "Troms",
+                checked: false
+            },
+            {
+                Id: 20,
+                name: "Finnmark",
+                checked: false
+            }
         ];
+
+        
+        var councilDetailsPromise = AreaFactory.Councils.details();
+        councilDetailsPromise.then(function (data) {
+            $scope.councilDetails = data.features;
+        });
+
+        $scope.currentCountyId = [];
+        $scope.getCouncils = function (county) {
+            if (county.checked) {
+                $scope.currentCountyId.push(county.Id);
+            } else {
+                var i = $scope.currentCountyId.indexOf(county.Id);
+                if (i != -1) {
+                    $scope.currentCountyId.splice(i, 1);
+                }
+            }
+
+            console.log($scope.councilDetails);
+            console.log($scope.currentCountyId);
+        };
+
+
+        //$scope.councilFilter = function (councilDetails) {
+        //    if ($scope.currentCountyId.length > 0) {
+
+        //        var log = [];
+        //        angular.forEach(councilDetails, function (value, key) {
+        //            console.log(value);
+        //            console.log(key);
+
+        //            if (value.FY_NR == 01) {
+                        
+        //            }
+        //        }, log);
+        //        console.log(log);
+        //    }
+        //}
+
 
         $scope.council = [
             "Oslo",
@@ -41,15 +175,59 @@
             "Halden"
         ];
 
-        //$scope.levels = [ // dropdown
-        //    "Gult",
-        //    "Orange",
-        //    "Rød"
-        //];
+        $scope.dtFrom = new Date();
+        $scope.dtTo = new Date();
+        $scope.startTime = new Date();
+        $scope.endTime = new Date();
+
+        $scope.recipients = {
+            Brannsjef: false,
+            Lensmann: false,
+            Fylkesmann: false
+        };
+
+        $scope.messageUpdate = {
+            SMS: false,
+            Email: true
+        };
 
 
+        $scope.messageDegrade = [
+        {
+            name: 'SMS',
+            checked: false,
+            levels: [{
+                name: 'Gult',
+                checked: false
+            },
+            {
+                name: 'Orange',
+                checked: false
+            },
+            {
+                name: 'Rød',
+                checked: false
+            }]
+        },
+        {
+            name: 'Email',
+            checked: false,
+            levels: [{
+                name: 'Gult',
+                checked: false
+            },
+            {
+                name: 'Orange',
+                checked: false
+            },
+            {
+                name: 'Rød',
+                checked: false
+            }]
+        }];
 
-        $scope.submitForm = function() {
+
+        $scope.submitForm = function () {
             console.log('subitform');
 
             console.log($scope.floodWarning.value);
@@ -57,13 +235,44 @@
                 var value = $scope.floodWarning[key].value;
                 console.log(value);
             }
-            
 
             $scope.message = angular.copy($scope.editableMessage);
+
+            $scope.alerts.push({ type: 'success', msg: 'Varsel lagret' });
         };
 
         $scope.cancelForm = function () {
             //window.history.back();
             console.log('cancelform');
         }
+
+        $scope.alerts = [
+        ];
+
+        $scope.closeAlert = function (index) {
+            $scope.alerts.splice(index, 1);
+        };
     });
+
+angularFormsApp.factory('AreaFactory', ['$http',
+  function ($http) {
+      var councilServiceUrl = "http://gis3.nve.no/map/rest/services/Mapservices/Administrasjon/MapServer/3/query?where=1%3D1&outFields=*&returnGeometry=false&f=pjson&callback=JSON_CALLBACK"
+
+      var councils = {
+          details: function () {
+              return $http({
+                  url: councilServiceUrl,
+                  method: "JSONP",
+              })
+                .then(function (response) {
+                    return response.data;
+                });
+          }
+      };
+
+      return {
+          Councils: councils // kommuner
+      };
+  }
+]);
+

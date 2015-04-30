@@ -1,11 +1,11 @@
 ﻿<form role="form" class="form-horizontal">
-    <h3>Abonèr på varsler</h3>
+    <h3>Registrer varsler</h3>
     <br />
 
     <fieldset>
         <legend>Type varsel</legend>
         <div class="form-group">
-            <div class="col-sm-offset-3">
+            <div class="col-sm-offset-1">
                 <span><b>Flomvarsel</b></span>
                 <div ng-repeat="(floodLevel, enabled) in floodWarning">
                     <div class="col-md-2">
@@ -21,7 +21,7 @@
         <br />
 
         <div class="form-group">
-            <div class="col-sm-offset-3">
+            <div class="col-sm-offset-1">
                 <span><b>Jordskredvarsel</b></span>
                 <div ng-repeat="(landslideLevel, enabled) in landslideWarning">
                     <div class="col-md-2">
@@ -37,7 +37,7 @@
         <br />
 
         <div class="form-group">
-            <div class="col-sm-offset-3">
+            <div class="col-sm-offset-1">
                 <span><b>Snøskredvarsel</b></span>
                 <div ng-repeat="(avalancheLevel, enabled) in avalancheWarning">
                     <div class="col-md-2">
@@ -56,19 +56,25 @@
     <fieldset>
         <legend>Område</legend>
         <div class="form-group">
-            <label for="county" class="col-sm-3 control-label">Fylke</label>
-            <div class="col-sm-9">
-                <select name="county" id="county" class="form-control"
-                        ng-model="message.county" ng-options="x for x in county"></select>
-            </div>
-        </div>
-        <br />
+            <div class="col-sm-offset-1">
+                <span><b>Fylke</b></span>
+                <div ng-repeat="county in counties" ng-init="sectionIndex = $index">
+                    <div class="checkbox">
+                        <input type="checkbox" id={{county.Id}} ng-model="county.checked" ng-change="getCouncils(county)" />
+                        <label for={{county.Id}}> {{county.name}}</label>
+                        <p style="color: lightblue">FY_NR: {{county.Id}}</p>
+                    </div>
+                </div>
 
-        <div class="form-group">
-            <label for="council" class="col-sm-3 control-label">Kommune</label>
-            <div class="col-sm-9">
-                <select name="council" id="council" class="form-control"
-                        ng-model="message.council" ng-options="x for x in council"></select>
+                <!--<div ng-repeat="item in councilDetails | filter: { attributes: { FY_NR: currentCountyId }}">-->
+                <div ng-repeat="item in councilDetails">
+                    <input type="checkbox" id="{{item.Id}}" ng-model="councilDetails.selected[item.attributes.KOMM_NR]">{{item.attributes.KOMMNAVN}}
+                    <p style="color: lightblue">KOMM_NR: {{item.attributes.KOMM_NR}}. FY_NR: {{item.attributes.FY_NR}}</p>
+                </div>
+
+                
+               
+
             </div>
         </div>
         <br />
@@ -76,15 +82,43 @@
 
     <fieldset>
         <legend>Periode</legend>
+        <div class="row">
+            <div class="col-sm-offset-1">
+                <div class="col-md-4">
+                    <label><b>Fra dato</b></label>
+                    <div style="display:inline-block; min-height:290px;">
+                        <datepicker ng-model="dtFrom" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label><b>Fra tidspunkt</b></label>
+                    <timepicker ng-model="startTime" show-meridian="false"></timepicker>
+                </div>
+
+                <div class="col-md-4">
+                    <label><b>Til dato</b></label>
+                    <div style="display:inline-block; min-height:290px;">
+                        <datepicker ng-model="dtTo" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label><b>Fra tidspunkt</b></label>
+                    <timepicker ng-model="endTime" show-meridian="false"></timepicker>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-offset-1">
+            <span><b>Valgt periode</b></span>
+            <pre>Fra: <em>{{dtFrom | date:'fullDate'}} - {{startTime | date:'shortTime' }}</em></pre>
+            <pre>Til: <em>{{dtTo | date:'fullDate' }} - {{endTime | date:'shortTime' }}</em></pre>
+        </div>
+        <br />
     </fieldset>
 
     <fieldset>
         <legend>Utsendelse</legend>
         <div class="form-group">
-            <div class="col-sm-3">
-            </div>
-            <div class="col-sm-9">
-                <span><b>Utsendelse</b></span>
+            <div class="col-sm-offset-1">
                 <div ng-repeat="(message,enabled) in messagetype">
                     <div class="checkbox">
                         <input id="messagetype-{{message}}" type="checkbox" ng-model="messagetype[message]" />
@@ -96,17 +130,72 @@
         <br />
     </fieldset>
 
-
-
-
-    <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
-            <input type="button" class="btn btn-default" value="Avbryt"
-                   ng-click="cancelForm()" />
-
-            <input type="submit" class="btn btn-primary" value="Send"
-                   ng-click="submitForm()" />
+    <fieldset>
+        <legend>Andre mottakere <span style="color: lightblue">(dynamisk generert fra profil)</span></legend>
+        <div class="form-group">
+            <div class="col-sm-offset-1">
+                <div ng-repeat="(recipient, enabled) in recipients">
+                    <div class="checkbox">
+                        <input id="recipient-{{recipient}}" type="checkbox" ng-model="recipients[recipient]" />
+                        <label for="recipient-{{recipient}}">{{recipient}}</label>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+        <br />
+    </fieldset>
+
+    <fieldset>
+        <legend>Motta oppgraderinger</legend>
+        <div class="form-group">
+            <div class="col-sm-offset-1">
+                <div ng-repeat="(msgUpdateType, enabled) in messageUpdate">
+                    <div class="checkbox">
+                        <input id="msgupdatetype-{{msgUpdateType}}" type="checkbox" ng-model="messageUpdate[msgUpdateType]" />
+                        <label for="msgupdatetype-{{msgUpdateType}}">{{msgUpdateType}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </fieldset>
+
+    <fieldset>
+        <legend>Motta nedgraderinger</legend>
+        <div class="form-group">
+            <div class="col-sm-offset-1">
+                <div ng-repeat="type in messageDegrade" ng-init="sectionIndex = $index">
+                    <div class="checkbox">
+                        <input type="checkbox" ng-model="type.checked" />
+                        <label>{{type.name}}</label>
+                    </div>
+                    <div class="row" style="margin-left: 10px">
+                        <div class="col-md-1 " ng-repeat="level in type.levels">
+                            <div class="checkbox">
+                                <input type="checkbox" ng-model="level.checked" />
+                                <label>{{level.name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+                <p style="color: lightblue">{{messageDegrade}}</p>
+            </div>
+        </div>
+        <br />
+    </fieldset>
+
+    <fieldset>
+        <div class="form-group">
+            <div class="col-sm-offset-1">
+                <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+                <input type="button" class="btn btn-default" value="Avbryt"
+                       ng-click="cancelForm()" />
+
+                <input type="submit" class="btn btn-primary" value="Send"
+                       ng-click="submitForm()" />
+            </div>
+        </div>
+    </fieldset>
 
 </form>

@@ -61,6 +61,10 @@
     <Content Include="app\ReportsForm\repDirective.js" />
     <Content Include="app\ReportsForm\repTemplate.html" />
     <Content Include="Content\awesome-bootstrap-checkbox.css" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
     <Content Include="Scripts\version.json" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
