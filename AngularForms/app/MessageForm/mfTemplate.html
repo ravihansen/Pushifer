@@ -15,7 +15,7 @@
                         </div>
                     </div>
                 </div>
-                <p style="color: lightblue">{{floodWarning}}</p>
+                <!--<p style="color: lightblue">{{floodWarning}}</p>-->
             </div>
         </div>
         <br />
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                 </div>
-                <p style="color: lightblue">{{landslideWarning}}</p>
+                <!--<p style="color: lightblue">{{landslideWarning}}</p>-->
             </div>
         </div>
         <br />
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <p style="color: lightblue">{{avalancheWarning}}</p>
+                <!--<p style="color: lightblue">{{avalancheWarning}}</p>-->
             </div>
         </div>
         <br />
@@ -57,24 +57,24 @@
         <legend>Område</legend>
         <div class="form-group">
             <div class="col-sm-offset-1">
-                <span><b>Fylke</b></span>
-                <div ng-repeat="county in counties" ng-init="sectionIndex = $index">
-                    <div class="checkbox">
-                        <input type="checkbox" id={{county.Id}} ng-model="county.checked" ng-change="getCouncils(county)" />
-                        <label for={{county.Id}}> {{county.name}}</label>
-                        <p style="color: lightblue">FY_NR: {{county.Id}}</p>
+                <div class="col-md-4">
+                    <span><b>Fylke</b></span>
+                    <div ng-repeat="county in counties" ng-init="sectionIndex = $index">
+                        <div class="checkbox">
+                            <input type="checkbox" id={{county.Id}} ng-model="county.checked" ng-change="getCouncils(county)" />
+                            <label for={{county.Id}}> {{county.name}}</label>
+                        </div>
                     </div>
                 </div>
-
-                <!--<div ng-repeat="item in councilDetails | filter: { attributes: { FY_NR: currentCountyId }}">-->
-                <div ng-repeat="item in councilDetails">
-                    <input type="checkbox" id="{{item.Id}}" ng-model="councilDetails.selected[item.attributes.KOMM_NR]">{{item.attributes.KOMMNAVN}}
-                    <p style="color: lightblue">KOMM_NR: {{item.attributes.KOMM_NR}}. FY_NR: {{item.attributes.FY_NR}}</p>
+                <div class="col-md-4">
+                    <span><b>Kommune</b></span>
+                    <div ng-repeat="item in selectedCounties">
+                        <div class="checkbox">
+                            <input type="checkbox" id="{{item.KOMM_NR}}" ng-model="councilDetails.selected[item.attributes.KOMM_NR]">
+                            <i><label for={{item.KOMM_NR}}> {{item.KOMMNAVN}}</label></i>
+                        </div>
+                    </div>
                 </div>
-
-                
-               
-
             </div>
         </div>
         <br />
@@ -107,12 +107,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-offset-1">
-            <span><b>Valgt periode</b></span>
-            <pre>Fra: <em>{{dtFrom | date:'fullDate'}} - {{startTime | date:'shortTime' }}</em></pre>
-            <pre>Til: <em>{{dtTo | date:'fullDate' }} - {{endTime | date:'shortTime' }}</em></pre>
-        </div>
-        <br />
+ 
     </fieldset>
 
     <fieldset>
@@ -173,16 +168,54 @@
                         <div class="col-md-1 " ng-repeat="level in type.levels">
                             <div class="checkbox">
                                 <input type="checkbox" ng-model="level.checked" />
-                                <label>{{level.name}}</label>
+                                <i><label>{{level.name}}</label></i>
                             </div>
                         </div>
                     </div>
-                    <br/>
+                    <br />
                 </div>
-                <p style="color: lightblue">{{messageDegrade}}</p>
+                <!--<p style="color: lightblue">{{messageDegrade}}</p>-->
             </div>
         </div>
         <br />
+    </fieldset>
+    
+    <fieldset>
+        <legend>Ditt varsel</legend>
+        <div class="form-group">
+            <div class="col-sm-offset-1">
+                <span><b>Type varsel</b></span>
+                <pre>Flomvarsel: {{floodWarning}}</pre>
+                <pre>Jorskredvarsel: {{landslideWarning}}</pre>
+                <pre>Snøskredvarsel: {{avalancheWarning}}</pre>
+            </div>
+            <div class="col-sm-offset-1">
+                <span><b>Område</b></span>
+                <pre></pre>
+            </div>
+            <div class="col-sm-offset-1">
+                <span><b>Valgt periode</b></span>
+                <pre>Fra: <em>{{dtFrom | date:'fullDate'}} - {{startTime | date:'shortTime' }}</em></pre>
+                <pre>Til: <em>{{dtTo | date:'fullDate' }} - {{endTime | date:'shortTime' }}</em></pre>
+            </div>
+            <div class="col-sm-offset-1">
+                <span><b>Utsendelse</b></span>
+                <pre>{{message}}</pre>
+            </div>
+            <div class="col-sm-offset-1">
+                <span><b>Andre mottakere</b></span>
+                <pre>{{recipient}}</pre>
+            </div>
+            <div class="col-sm-offset-1">
+                <span><b>Motta oppgraderinger</b></span>
+                <pre>{{messageUpdate}}</pre>
+            </div>
+            <div class="col-sm-offset-1">
+                <span><b>Motta nedgraderinger</b></span>
+                <pre>{{messageDegrade}}</pre>
+            </div>
+            <br />
+        </div>
     </fieldset>
 
     <fieldset>

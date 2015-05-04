@@ -130,25 +130,55 @@
             }
         ];
 
-        
+
         var councilDetailsPromise = AreaFactory.Councils.details();
         councilDetailsPromise.then(function (data) {
             $scope.councilDetails = data.features;
         });
 
+        $scope.selectedCounties = [];
         $scope.currentCountyId = [];
         $scope.getCouncils = function (county) {
+
             if (county.checked) {
+                console.log('checked');
+
                 $scope.currentCountyId.push(county.Id);
+                console.log($scope.currentCountyId);
+
+
+                if ($scope.currentCountyId.length > 0) {
+                    angular.forEach($scope.councilDetails, function (value, key) {
+                        angular.forEach($scope.currentCountyId, function (v, k) {
+                            if (value.attributes.FY_NR == v) {
+                                $scope.selectedCounties.push(value.attributes);
+                            }
+                        });
+                    });
+                }
+
+
             } else {
+                console.log('unchecked');
+
                 var i = $scope.currentCountyId.indexOf(county.Id);
+                console.log('remove: ' + i);
                 if (i != -1) {
+                    angular.forEach($scope.councilDetails, function (value, key) {
+                        angular.forEach($scope.currentCountyId, function (v, k) {
+                            if (value.attributes.FY_NR == v) {
+                                $scope.selectedCounties.splice(i, 1);
+                            }
+                        });
+                    });
+
                     $scope.currentCountyId.splice(i, 1);
                 }
             }
 
-            console.log($scope.councilDetails);
-            console.log($scope.currentCountyId);
+            console.log($scope.currentCountyId2);
+
+
         };
 
 
@@ -161,7 +191,7 @@
         //            console.log(key);
 
         //            if (value.FY_NR == 01) {
-                        
+
         //            }
         //        }, log);
         //        console.log(log);
