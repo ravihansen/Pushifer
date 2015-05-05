@@ -1,0 +1,18 @@
+﻿<form role="form" class="form-horizontal" ng-controller="upController">
+    <h3>Bruker profil</h3>
+    <br />
+    <fieldset>
+        <legend>Info</legend>
+        <div class="form-group">
+            <div class="col-sm-offset-1">
+                <div ng-repeat="content in additionalContent " >
+                    <div class="checkbox">
+                        <input id={{content.id}} type="checkbox" ng-model="content.checked" />
+                        <label for={{content.id}}>{{content.name}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    
+</form>

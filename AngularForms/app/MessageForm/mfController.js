@@ -176,39 +176,35 @@
                 }
             }
 
-            console.log($scope.currentCountyId2);
+            console.log($scope.currentCountyId);
 
 
         };
 
+        require(["esri/map", "dojo/domReady!"], function (Map) {
+            var map = new Map("map", {
+                center: [10.703076, 59.930652],
+                zoom: 10,
+                basemap: "topo"
+            });
+        });
 
-        //$scope.councilFilter = function (councilDetails) {
-        //    if ($scope.currentCountyId.length > 0) {
+        $scope.period_ispermanent = {
+            Alltid: true
+        };
 
-        //        var log = [];
-        //        angular.forEach(councilDetails, function (value, key) {
-        //            console.log(value);
-        //            console.log(key);
-
-        //            if (value.FY_NR == 01) {
-
-        //            }
-        //        }, log);
-        //        console.log(log);
-        //    }
-        //}
+        $scope.timespan_ispermanent = {
+            Alltid: true
+        };
 
 
-        $scope.council = [
-            "Oslo",
-            "Bærum",
-            "Halden"
-        ];
+
 
         $scope.dtFrom = new Date();
         $scope.dtTo = new Date();
-        $scope.startTime = new Date();
-        $scope.endTime = new Date();
+        var now = new Date();
+        $scope.startTime = now.setHours(8, 0, 0, 0);
+        $scope.endTime = now.setHours(16, 0, 0, 0);
 
         $scope.recipients = {
             Brannsjef: false,

@@ -1,4 +1,4 @@
-﻿<form role="form" class="form-horizontal">
+﻿<form role="form" class="form-horizontal" ng-controller="mfController">
     <h3>Registrer varsler</h3>
     <br />
 
@@ -57,7 +57,7 @@
         <legend>Område</legend>
         <div class="form-group">
             <div class="col-sm-offset-1">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <span><b>Fylke</b></span>
                     <div ng-repeat="county in counties" ng-init="sectionIndex = $index">
                         <div class="checkbox">
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <span><b>Kommune</b></span>
                     <div ng-repeat="item in selectedCounties">
                         <div class="checkbox">
@@ -75,6 +75,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <p id="map" class="map"></p>
+                </div>
             </div>
         </div>
         <br />
@@ -82,7 +85,16 @@
 
     <fieldset>
         <legend>Periode</legend>
-        <div class="row">
+        <div class="col-sm-offset-1">
+            <div ng-repeat="(ip,enabled) in period_ispermanent ">
+                <div class="checkbox">
+                    <input id="period-{{ip}}" type="checkbox" ng-model="period_ispermanent[ip]" />
+                    <label for="period-{{ip}}">Alltid</label>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="form-group" ng-show="!period_ispermanent.Alltid">
             <div class="col-sm-offset-1">
                 <div class="col-md-4">
                     <label><b>Fra dato</b></label>
@@ -90,16 +102,32 @@
                         <datepicker ng-model="dtFrom" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <label><b>Fra tidspunkt</b></label>
-                    <timepicker ng-model="startTime" show-meridian="false"></timepicker>
-                </div>
-
-                <div class="col-md-4">
+                <div class="col-sm-offset-1 col-md-4">
                     <label><b>Til dato</b></label>
                     <div style="display:inline-block; min-height:290px;">
                         <datepicker ng-model="dtTo" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
                     </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Tidpunkt</legend>
+        <div class="col-sm-offset-1">
+            <div ng-repeat="(timespan,enabled) in timespan_ispermanent ">
+                <div class="checkbox">
+                    <input id="timespan-{{timespan}}" type="checkbox" ng-model="timespan_ispermanent[timespan]" />
+                    <label for="timespan-{{timespan}}">Hele døgnet</label>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="form-group" ng-show="!timespan_ispermanent.Alltid">
+            <div class="col-sm-offset-1">
+                <div class="col-md-2">
+                    <label><b>Fra tidspunkt</b></label>
+                    <timepicker ng-model="startTime" show-meridian="false"></timepicker>
                 </div>
                 <div class="col-md-2">
                     <label><b>Fra tidspunkt</b></label>
@@ -107,7 +135,6 @@
                 </div>
             </div>
         </div>
- 
     </fieldset>
 
     <fieldset>
@@ -177,45 +204,49 @@
                 <!--<p style="color: lightblue">{{messageDegrade}}</p>-->
             </div>
         </div>
-        <br />
     </fieldset>
-    
+
+
+
     <fieldset>
         <legend>Ditt varsel</legend>
-        <div class="form-group">
-            <div class="col-sm-offset-1">
-                <span><b>Type varsel</b></span>
-                <pre>Flomvarsel: {{floodWarning}}</pre>
-                <pre>Jorskredvarsel: {{landslideWarning}}</pre>
-                <pre>Snøskredvarsel: {{avalancheWarning}}</pre>
-            </div>
-            <div class="col-sm-offset-1">
-                <span><b>Område</b></span>
-                <pre></pre>
-            </div>
-            <div class="col-sm-offset-1">
-                <span><b>Valgt periode</b></span>
-                <pre>Fra: <em>{{dtFrom | date:'fullDate'}} - {{startTime | date:'shortTime' }}</em></pre>
-                <pre>Til: <em>{{dtTo | date:'fullDate' }} - {{endTime | date:'shortTime' }}</em></pre>
-            </div>
-            <div class="col-sm-offset-1">
-                <span><b>Utsendelse</b></span>
-                <pre>{{message}}</pre>
-            </div>
-            <div class="col-sm-offset-1">
-                <span><b>Andre mottakere</b></span>
-                <pre>{{recipient}}</pre>
-            </div>
-            <div class="col-sm-offset-1">
-                <span><b>Motta oppgraderinger</b></span>
-                <pre>{{messageUpdate}}</pre>
-            </div>
-            <div class="col-sm-offset-1">
-                <span><b>Motta nedgraderinger</b></span>
-                <pre>{{messageDegrade}}</pre>
-            </div>
-            <br />
+        <div class="col-sm-offset-1">
+            <span><b>Type varsel</b></span>
+            <pre>Flomvarsel: {{floodWarning}}</pre>
+            <pre>Jorskredvarsel: {{landslideWarning}}</pre>
+            <pre>Snøskredvarsel: {{avalancheWarning}}</pre>
         </div>
+        <div class="col-sm-offset-1">
+            <span><b>Område</b></span>
+            <pre>{{currentCountyId}}</pre>
+        </div>
+        <div class="col-sm-offset-1">
+            <span><b>Valgt periode</b></span>
+            <pre>Fra: <em>{{dtFrom | date:'fullDate'}}</em></pre>
+            <pre>Til: <em>{{dtTo | date:'fullDate' }}</em></pre>
+        </div>
+        <div class="col-sm-offset-1">
+            <span><b>Tidspunkt</b></span>
+            <pre>Fra: <em>{{startTime | date:'shortTime' }}</em></pre>
+            <pre>Til: <em>{{endTime | date:'shortTime' }}</em></pre>
+        </div>
+        <div class="col-sm-offset-1">
+            <span><b>Utsendelse</b></span>
+            <pre>{{messagetype}}</pre>
+        </div>
+        <div class="col-sm-offset-1">
+            <span><b>Andre mottakere</b></span>
+            <pre>{{recipient}}</pre>
+        </div>
+        <div class="col-sm-offset-1">
+            <span><b>Motta oppgraderinger</b></span>
+            <pre>{{messageUpdate}}</pre>
+        </div>
+        <div class="col-sm-offset-1">
+            <span><b>Motta nedgraderinger</b></span>
+            <pre>{{messageDegrade}}</pre>
+        </div>
+        <br />
     </fieldset>
 
     <fieldset>

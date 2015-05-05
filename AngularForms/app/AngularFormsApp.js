@@ -14,6 +14,10 @@ angularFormsApp.config(function ($routeProvider) {
             templateUrl: "app/ReportsForm/repTemplate.html",
             controller: "repController"
         })
+        .when("/newUserProfileForm", {
+            templateUrl: "app/UserProfileForm/upTemplate.html",
+            controller: "upController"
+        })
     .otherwise({
         redirectTo: "/home"
     });
@@ -26,6 +30,9 @@ angularFormsApp.controller("HomeController",
         };
         $scope.goToMessagesReport = function () {
             $location.path('/newReportsForm');
+        };
+        $scope.goToUserProfile = function () {
+            $location.path('/newUserProfileForm');
         };
         $scope.goToHome = function () {
             $location.path('/home');
