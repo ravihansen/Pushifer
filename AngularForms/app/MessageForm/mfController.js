@@ -4,6 +4,7 @@
 
         $scope.editableMessage = angular.copy($scope.message);
 
+        // -- Type varsel --
         $scope.floodWarning = {
             // flomvarsel
             Gult: false,
@@ -24,12 +25,56 @@
             Orange: false,
             Rød: false
         };
+
+        $scope.enableCounties = function () {
+            for (var i in $scope.floodWarning)
+            {
+                if ($scope.floodWarning[i]) {
+                    return true;
+                }
+            }
+
+            for (var o in $scope.landslideWarning) {
+                if ($scope.landslideWarning[o]) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
+        $scope.enableAvalancheRegions = function () {
+            for (var o in $scope.avalancheWarning) {
+                if ($scope.avalancheWarning[o]) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
         //--
 
-        $scope.messagetype = {
-            SMS: false,
-            Email: true
-        };
+
+
+        // -- Område --
+        $scope.avalancheRegions = [
+            {
+                Id: 06,
+                name: "Alta",
+                checked: false
+            },
+            {
+                Id: 07,
+                name: "Kåfjord",
+                checked: false
+            },
+            {
+                Id: 08,
+                name: "Tromsø",
+                checked: false
+            }
+        ];
 
 
         $scope.counties = [
@@ -182,12 +227,15 @@
         };
 
         require(["esri/map", "dojo/domReady!"], function (Map) {
-            var map = new Map("map", {
+            $scope.map = new Map("map", {
                 center: [10.703076, 59.930652],
                 zoom: 10,
                 basemap: "topo"
             });
         });
+        
+        //--
+
 
         $scope.period_ispermanent = {
             Alltid: true
@@ -196,8 +244,6 @@
         $scope.timespan_ispermanent = {
             Alltid: true
         };
-
-
 
 
         $scope.dtFrom = new Date();
@@ -212,46 +258,32 @@
             Fylkesmann: false
         };
 
+        $scope.messagetype = {
+            SMS: false,
+            Email: true
+        };
+
+
+
         $scope.messageUpdate = {
             SMS: false,
             Email: true
         };
 
 
-        $scope.messageDegrade = [
-        {
-            name: 'SMS',
-            checked: false,
-            levels: [{
-                name: 'Gult',
-                checked: false
-            },
-            {
-                name: 'Orange',
-                checked: false
-            },
-            {
-                name: 'Rød',
-                checked: false
-            }]
-        },
-        {
-            name: 'Email',
-            checked: false,
-            levels: [{
-                name: 'Gult',
-                checked: false
-            },
-            {
-                name: 'Orange',
-                checked: false
-            },
-            {
-                name: 'Rød',
-                checked: false
-            }]
-        }];
+        $scope.messageDegradeSMS = {
+            // flomvarsel
+            Gult: false,
+            Orange: false,
+            Rød: false
+        };
 
+        $scope.messageDegradeEmail = {
+            // flomvarsel
+            Gult: false,
+            Orange: false,
+            Rød: false
+        };
 
         $scope.submitForm = function () {
             console.log('subitform');

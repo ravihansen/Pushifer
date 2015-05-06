@@ -57,26 +57,47 @@
         <legend>Område</legend>
         <div class="form-group">
             <div class="col-sm-offset-1">
-                <div class="col-md-2">
-                    <span><b>Fylke</b></span>
-                    <div ng-repeat="county in counties" ng-init="sectionIndex = $index">
-                        <div class="checkbox">
-                            <input type="checkbox" id={{county.Id}} ng-model="county.checked" ng-change="getCouncils(county)" />
-                            <label for={{county.Id}}> {{county.name}}</label>
+                <!-- fylke / kommune -->
+                <div ng-show="enableCounties()">
+                    <div class="col-md-2">
+                        <span><b>Fylke</b></span>
+                        <div ng-repeat="county in counties" ng-init="sectionIndex = $index">
+                            <div class="checkbox">
+                                <input type="checkbox" id={{county.Id}} ng-model="county.checked" ng-change="getCouncils(county)" />
+                                <label for={{county.Id}}> {{county.name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div ng-repeat="item in selectedCounties">
+                            <div class="checkbox">
+                                <input type="checkbox" id="{{item.KOMM_NR}}" ng-model="councilDetails.selected[item.attributes.KOMM_NR]">
+                                <i><label for={{item.KOMM_NR}}> {{item.KOMMNAVN}}</label></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <span><b>Kommune</b></span>
-                    <div ng-repeat="item in selectedCounties">
-                        <div class="checkbox">
-                            <input type="checkbox" id="{{item.KOMM_NR}}" ng-model="councilDetails.selected[item.attributes.KOMM_NR]">
-                            <i><label for={{item.KOMM_NR}}> {{item.KOMMNAVN}}</label></i>
+
+                <!-- varslingsregioner -->
+                <div ng-show="enableAvalancheRegions()">
+                    <div class="col-md-2">
+                        <span><b>Varslingsregioner</b></span>
+                        <div ng-repeat="region in avalancheRegions">
+                            <div class="checkbox">
+                                <input type="checkbox" id={{region.Id}} ng-model="region.checked" />
+                                <label for={{region.Id}}> {{region.name}}</label>
+                            </div>
                         </div>
                     </div>
                 </div>
+                
+                <!-- fylke / kommune -->
                 <div class="col-md-6">
-                    <p id="map" class="map"></p>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div id="map" style="height: 600px"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -186,22 +207,29 @@
         <legend>Motta nedgraderinger</legend>
         <div class="form-group">
             <div class="col-sm-offset-1">
-                <div ng-repeat="type in messageDegrade" ng-init="sectionIndex = $index">
-                    <div class="checkbox">
-                        <input type="checkbox" ng-model="type.checked" />
-                        <label>{{type.name}}</label>
-                    </div>
-                    <div class="row" style="margin-left: 10px">
-                        <div class="col-md-1 " ng-repeat="level in type.levels">
-                            <div class="checkbox">
-                                <input type="checkbox" ng-model="level.checked" />
-                                <i><label>{{level.name}}</label></i>
-                            </div>
+                <span><b>SMS</b></span>
+                <div ng-repeat="(smslevel, enabled) in messageDegradeSMS">
+                    <div class="col-md-2">
+                        <div class="checkbox">
+                            <input type="checkbox" id="messageDegradeSMS-{{smslevel}}" ng-model="messageDegradeSMS[smslevel]" /> <!-- Must seperate checkbox and label du to awesome-bootstrap-checkbox.css-->
+                            <label for="messageDegradeSMS-{{smslevel}}">{{smslevel}}</label>
                         </div>
                     </div>
-                    <br />
                 </div>
-                <!--<p style="color: lightblue">{{messageDegrade}}</p>-->
+            </div>
+        </div>
+        <div class="form-group">
+
+            <div class="col-sm-offset-1">
+                <span><b>Epost</b></span>
+                <div ng-repeat="(emaillevel, enabled) in messageDegradeEmail">
+                    <div class="col-md-2">
+                        <div class="checkbox">
+                            <input type="checkbox" id="messageDegradeEmail-{{emaillevel}}" ng-model="messageDegradeEmail[emaillevel]" /> <!-- Must seperate checkbox and label du to awesome-bootstrap-checkbox.css-->
+                            <label for="messageDegradeEmail-{{emaillevel}}">{{emaillevel}}</label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </fieldset>
@@ -243,8 +271,12 @@
             <pre>{{messageUpdate}}</pre>
         </div>
         <div class="col-sm-offset-1">
-            <span><b>Motta nedgraderinger</b></span>
-            <pre>{{messageDegrade}}</pre>
+            <span><b>Motta nedgraderinger på sms</b></span>
+            <pre>{{messageDegradeSMS}}</pre>
+        </div>
+        <div class="col-sm-offset-1">
+            <span><b>Motta nedgraderinger på epost</b></span>
+            <pre>{{messageDegradeEmail}}</pre>
         </div>
         <br />
     </fieldset>
