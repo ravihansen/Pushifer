@@ -6,7 +6,13 @@
         <legend>Type varsel</legend>
         <div class="form-group">
             <div class="col-sm-offset-1">
-                <span><b>Flomvarsel</b></span>
+                <span>
+                    <b>Flomvarsel</b>
+                    <a href="http://varsom.no/Flom/Varslings-Aktsomhetsniva/" target="_blank">
+                        &nbsp;
+                        <i style="color: blue" class="fa fa-info"></i>
+                    </a>
+                </span>
                 <div ng-repeat="(floodLevel, enabled) in floodWarning">
                     <div class="col-md-2">
                         <div class="checkbox">
@@ -22,7 +28,13 @@
 
         <div class="form-group">
             <div class="col-sm-offset-1">
-                <span><b>Jordskredvarsel</b></span>
+                <span>
+                    <b>Jordskredvarsel</b>
+                    <a href="http://varsom.no/Jordskred/Varslingnivaer--skala/" target="_blank">
+                        &nbsp;
+                        <i style="color: blue" class="fa fa-info"></i>
+                    </a>
+                </span>
                 <div ng-repeat="(landslideLevel, enabled) in landslideWarning">
                     <div class="col-md-2">
                         <div class="checkbox">
@@ -38,7 +50,13 @@
 
         <div class="form-group">
             <div class="col-sm-offset-1">
-                <span><b>Snøskredvarsel</b></span>
+                <span>
+                    <b>Snøskredvarsel</b>
+                    <a href="http://varsom.no/Snoskred/Skredskolen/Om-faregradene1/" target="_blank">
+                        &nbsp;
+                        <i style="color: blue" class="fa fa-info"></i>
+                    </a>
+                </span>
                 <div ng-repeat="(avalancheLevel, enabled) in avalancheWarning">
                     <div class="col-md-2">
                         <div class="checkbox">
@@ -56,46 +74,45 @@
     <fieldset>
         <legend>Område</legend>
         <div class="form-group">
-            <div class="col-sm-offset-1">
-                <!-- fylke / kommune -->
-                <div ng-show="enableCounties()">
-                    <div class="col-md-2">
-                        <span><b>Fylke</b></span>
-                        <div ng-repeat="county in counties" ng-init="sectionIndex = $index">
-                            <div class="checkbox">
-                                <input type="checkbox" id={{county.Id}} ng-model="county.checked" ng-change="getCouncils(county)" />
-                                <label for={{county.Id}}> {{county.name}}</label>
+            <div class="row">
+                <div class="col-sm-offset-1">
+                    <!-- fylke / kommune -->
+                    <div ng-show="enableRegions()">
+                        <div class="col-md-2">
+                            <span><b>Fylke</b></span>
+                            <div ng-repeat="county in counties" ng-init="sectionIndex = $index">
+                                <div class="checkbox">
+                                    <input type="checkbox" id={{county.Id}} ng-model="county.checked" ng-change="getCouncils(county)" />
+                                    <label for={{county.Id}}> {{county.name}}</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div ng-repeat="item in selectedCounties">
-                            <div class="checkbox">
-                                <input type="checkbox" id="{{item.KOMM_NR}}" ng-model="councilDetails.selected[item.attributes.KOMM_NR]">
-                                <i><label for={{item.KOMM_NR}}> {{item.KOMMNAVN}}</label></i>
+                        <div class="col-md-3">
+                            <div ng-repeat="item in selectedCounties">
+                                <div class="checkbox">
+                                    <input type="checkbox" id="{{item.KOMM_NR}}" ng-model="councilDetails.selected[item.attributes.KOMM_NR]">
+                                    <i><label for={{item.KOMM_NR}}> {{item.KOMMNAVN}}</label></i>
+                                </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div id="regional-map"></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- varslingsregioner -->
-                <div ng-show="enableAvalancheRegions()">
-                    <div class="col-md-2">
-                        <span><b>Varslingsregioner</b></span>
-                        <div ng-repeat="region in avalancheRegions">
-                            <div class="checkbox">
-                                <input type="checkbox" id={{region.Id}} ng-model="region.checked" />
-                                <label for={{region.Id}}> {{region.name}}</label>
+                    <!-- varslingsregioner -->
+                    <div ng-show="enableAvalancheRegions()">
+                        <div class="col-md-2">
+                            <span><b>Varslingsregioner</b></span>
+                            <div ng-repeat="region in avalancheRegions">
+                                <div class="checkbox">
+                                    <input type="checkbox" id={{region.Id}} ng-model="avalancheRegions[region]" />
+                                    <label for={{region.Id}}> {{region.name}}</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- fylke / kommune -->
-                <div class="col-md-6">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div id="map" style="height: 600px"></div>
+                        <div class="col-md-8">
+                            <div id="avalancheregions-map"></div>
                         </div>
                     </div>
                 </div>

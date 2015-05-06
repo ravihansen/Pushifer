@@ -1,4 +1,9 @@
-﻿angularFormsApp.controller('mfController',
+﻿/// <reference path="C:\Users\ravi.NVE\Documents\Visual Studio 2013\Projects\AngularForms\AngularForms\Scripts/bootstrapmap.js" />
+/// <reference path="C:\Users\ravi.NVE\Documents\Visual Studio 2013\Projects\AngularForms\AngularForms\Scripts/bootstrapmap.js" />
+/// <reference path="C:\Users\ravi.NVE\Documents\Visual Studio 2013\Projects\AngularForms\AngularForms\Scripts/bootstrapmap.js" />
+/// <reference path="C:\Users\ravi.NVE\Documents\Visual Studio 2013\Projects\AngularForms\AngularForms\Scripts/bootstrapmap.js" />
+/// <reference path="C:\Users\ravi.NVE\Documents\Visual Studio 2013\Projects\AngularForms\AngularForms\Scripts/bootstrapmap.js" />
+angularFormsApp.controller('mfController',
     function mfController($scope, AreaFactory, DataService) {
         $scope.message = DataService.message;
 
@@ -26,9 +31,8 @@
             Rød: false
         };
 
-        $scope.enableCounties = function () {
-            for (var i in $scope.floodWarning)
-            {
+        $scope.enableRegions = function () {
+            for (var i in $scope.floodWarning) {
                 if ($scope.floodWarning[i]) {
                     return true;
                 }
@@ -201,13 +205,8 @@
                         });
                     });
                 }
-
-
             } else {
-                console.log('unchecked');
-
                 var i = $scope.currentCountyId.indexOf(county.Id);
-                console.log('remove: ' + i);
                 if (i != -1) {
                     angular.forEach($scope.councilDetails, function (value, key) {
                         angular.forEach($scope.currentCountyId, function (v, k) {
@@ -220,20 +219,32 @@
                     $scope.currentCountyId.splice(i, 1);
                 }
             }
-
-            console.log($scope.currentCountyId);
-
-
         };
 
-        require(["esri/map", "dojo/domReady!"], function (Map) {
-            $scope.map = new Map("map", {
-                center: [10.703076, 59.930652],
-                zoom: 10,
-                basemap: "topo"
-            });
-        });
         
+        var dojoConfig = {
+            packages: [{
+                name: "application",
+                location: "//esri.github.com/bootstrap-map-js/src/js"
+            }]
+        };
+
+        require(["esri/map", "Scripts/bootstrapmap.js", "dojo/domReady!"],
+          function (map, bootstrapMap) {
+
+              var regionalmap = bootstrapMap.create("regional-map", {
+                  basemap: "national-geographic",
+                  center: [10.703076, 59.930652],
+                  zoom: 12
+              });
+
+              var avalancheregionsmap = bootstrapMap.create("avalancheregions-map", {
+                  basemap: "topo",
+                  center: [10.703076, 59.930652],
+                  zoom: 12
+              });
+          });
+
         //--
 
 

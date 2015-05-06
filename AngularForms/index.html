@@ -2,28 +2,51 @@
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="angularFormsApp">
 <head>
     <title>Abonnementsløsning</title>
+    <!-- bootstrap -->
     <link rel="stylesheet" href="Content/bootstrap.min.css" />
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="Content/awesome-bootstrap-checkbox.css" />
-    <link rel="stylesheet" href="http://js.arcgis.com/3.13/esri/css/esri.css">
+    <!-- /bootstrap -->
 
+    <!-- esri -->
+    <link rel="stylesheet" href="http://js.arcgis.com/3.13/esri/css/esri.css">
+    <link rel="stylesheet" href="http://esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css" />
+    <style type="text/css">
+        #regional-map {
+            min-height: 600px;
+            max-height: 1000px;
+        }
+
+        #avalancheregions-map {
+            min-height: 600px;
+            max-height: 1000px;
+        }
+    </style>
+    <!-- /esri -->
+
+    <!-- angular -->
     <script src="Scripts/angular.min.js"></script>
     <script src="Scripts/angular-route.min.js"></script>
     <script src="Scripts/angular-ui/ui-bootstrap.min.js"></script>
     <script src="Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
-    <script src="http://js.arcgis.com/3.13/"></script>
+    <!-- /angular -->
     
+    
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
+    <script src="http://js.arcgis.com/3.13/"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    
+    <!-- application -->
     <script src="app/AngularFormsApp.js"></script>
     <script src="app/DataService.js"></script>
     <script src="app/MessageForm/mfController.js"></script>
     <script src="app/MessageForm/mfDirective.js"></script>
     <script src="app/UserProfileForm/upController.js"></script>
     <script src="app/UserProfileForm/upDirective.js"></script>
-
+    <!-- /application -->
 </head>
+
 <body class="container">
-  
-    <!-- Static navbar -->
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="page-header">
@@ -35,6 +58,7 @@
                 </div>
             </div>
 
+            <!-- page navigation-->
             <div id="navbar" class="navbar-collapse collapse" ng-controller="HomeController">
                 <form class="navbar-form navbar-right" role="search">
                     <div class="input-group margin-bottom-sm">
@@ -48,7 +72,6 @@
 
                     <button type="submit" class="btn btn-default">Sign In</button>
                 </form>
-            
 
                 <ul class="nav navbar-nav">
                     <li><a ng-click="goToHome()"><i class="fa fa-home fa-fw"></i>&nbsp; Hjem</a></li>
@@ -57,18 +80,12 @@
                     <li><a ng-click="goToUserProfile()"><i class="fa fa-cog fa-fw"></i>&nbsp; Profil</a></li>
 
                 </ul>
-            </div><!--/.nav-collapse -->
+            </div>
 
-        </div><!--/.container-fluid -->
+        </div>
     </nav>
 
-
     <div ng-view>
-        
     </div>
-
-    <!-- <message-form/>-->
-
-    
 </body>
 </html>
