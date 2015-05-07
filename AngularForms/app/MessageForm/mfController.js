@@ -185,43 +185,48 @@ angularFormsApp.controller('mfController',
             $scope.councilDetails = data.features;
         });
 
-        $scope.selectedCounties = [];
-        $scope.currentCountyId = [];
+        $scope.selectedCountiesList = []; // a list of councils to be displayed
+        $scope.selectedCountiesId = []; // a list of all selected counties (checkboxes)
         $scope.getCouncils = function (county) {
+            if (county.checked) { // if county i checked
+                $scope.selectedCountiesId.push(county.Id);
 
-            if (county.checked) {
-                console.log('checked');
-
-                $scope.currentCountyId.push(county.Id);
-                console.log($scope.currentCountyId);
-
-
-                if ($scope.currentCountyId.length > 0) {
-                    angular.forEach($scope.councilDetails, function (value, key) {
-                        angular.forEach($scope.currentCountyId, function (v, k) {
-                            if (value.attributes.FY_NR == v) {
-                                $scope.selectedCounties.push(value.attributes);
-                            }
-                        });
+                if ($scope.selectedCountiesId.length > 0) {
+                    angular.forEach($scope.councilDetails, function (value) {
+                        if (value.attributes.FY_NR == county.Id) {
+                            $scope.selectedCountiesList.push(value.attributes);
+                        }
                     });
                 }
-            } else {
-                var i = $scope.currentCountyId.indexOf(county.Id);
+
+            }
+            else { // if county i unchecked
+                var i = $scope.selectedCountiesId.indexOf(county.Id);
                 if (i != -1) {
-                    angular.forEach($scope.councilDetails, function (value, key) {
-                        angular.forEach($scope.currentCountyId, function (v, k) {
-                            if (value.attributes.FY_NR == v) {
-                                $scope.selectedCounties.splice(i, 1);
-                            }
-                        });
+                    angular.forEach($scope.councilDetails, function (value) {
+                        if (value.attributes.FY_NR == county.Id) {
+                            $scope.selectedCountiesList.splice(i, 1);
+                        }
                     });
 
-                    $scope.currentCountyId.splice(i, 1);
+                    $scope.selectedCountiesId.splice(i, 1);
                 }
             }
+
+            console.log('selected counties ids');
+            console.log($scope.selectedCountiesId);
+            console.log('councils');
+            console.log($scope.selectedCountiesList);
         };
 
-        
+        $scope.selectedCouncilList = []; // a list of councils to be displayed
+        $scope.doMapStuff = function (county) {
+            console.log('doing map stuff');
+            $scope.selectedCouncilList.push(county);
+            console.log($scope.selectedCouncilList);
+        };
+
+
         var dojoConfig = {
             packages: [{
                 name: "application",

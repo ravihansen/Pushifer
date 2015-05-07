@@ -15,7 +15,7 @@
                 </span>
                 <div ng-repeat="(floodLevel, enabled) in floodWarning">
                     <div class="col-md-2">
-                        <div class="checkbox">
+                        <div class="checkbox checkbox-primary">
                             <input type="checkbox" id="flood{{floodLevel}}" ng-model="floodWarning[floodLevel]" /> <!-- Must seperate checkbox and label du to awesome-bootstrap-checkbox.css-->
                             <label for="flood{{floodLevel}}">{{floodLevel}}</label>
                         </div>
@@ -37,7 +37,7 @@
                 </span>
                 <div ng-repeat="(landslideLevel, enabled) in landslideWarning">
                     <div class="col-md-2">
-                        <div class="checkbox">
+                        <div class="checkbox checkbox-primary">
                             <input type="checkbox" id="landslide-{{landslideLevel}}" ng-model="landslideWarning[landslideLevel]" />
                             <label for="landslide-{{landslideLevel}}">{{landslideLevel}}</label>
                         </div>
@@ -59,7 +59,7 @@
                 </span>
                 <div ng-repeat="(avalancheLevel, enabled) in avalancheWarning">
                     <div class="col-md-2">
-                        <div class="checkbox">
+                        <div class="checkbox checkbox-primary">
                             <input type="checkbox" id="avalanche-{{avalancheLevel}}" ng-model="avalancheWarning[avalancheLevel]" />
                             <label for="avalanche-{{avalancheLevel}}">{{avalancheLevel}}</label>
                         </div>
@@ -80,18 +80,18 @@
                     <div ng-show="enableRegions()">
                         <div class="col-md-2">
                             <span><b>Fylke</b></span>
-                            <div ng-repeat="county in counties" ng-init="sectionIndex = $index">
-                                <div class="checkbox">
+                            <div ng-repeat="county in counties">
+                                <div class="checkbox checkbox-primary">
                                     <input type="checkbox" id={{county.Id}} ng-model="county.checked" ng-change="getCouncils(county)" />
                                     <label for={{county.Id}}> {{county.name}}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div ng-repeat="item in selectedCounties">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="{{item.KOMM_NR}}" ng-model="councilDetails.selected[item.attributes.KOMM_NR]">
-                                    <i><label for={{item.KOMM_NR}}> {{item.KOMMNAVN}}</label></i>
+                            <div ng-repeat="council in selectedCountiesList">
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox" id="{{council.KOMM_NR}}" ng-model="council.checked" ng-change="doMapStuff(council)">
+                                    <label for={{council.KOMM_NR}}> {{council.KOMMNAVN}}</label>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +105,7 @@
                         <div class="col-md-2">
                             <span><b>Varslingsregioner</b></span>
                             <div ng-repeat="region in avalancheRegions">
-                                <div class="checkbox">
+                                <div class="checkbox checkbox-primary">
                                     <input type="checkbox" id={{region.Id}} ng-model="avalancheRegions[region]" />
                                     <label for={{region.Id}}> {{region.name}}</label>
                                 </div>
@@ -125,7 +125,7 @@
         <legend>Periode</legend>
         <div class="col-sm-offset-1">
             <div ng-repeat="(ip,enabled) in period_ispermanent ">
-                <div class="checkbox">
+                <div class="checkbox checkbox-primary">
                     <input id="period-{{ip}}" type="checkbox" ng-model="period_ispermanent[ip]" />
                     <label for="period-{{ip}}">Alltid</label>
                 </div>
@@ -154,7 +154,7 @@
         <legend>Tidpunkt</legend>
         <div class="col-sm-offset-1">
             <div ng-repeat="(timespan,enabled) in timespan_ispermanent ">
-                <div class="checkbox">
+                <div class="checkbox checkbox-primary">
                     <input id="timespan-{{timespan}}" type="checkbox" ng-model="timespan_ispermanent[timespan]" />
                     <label for="timespan-{{timespan}}">Hele døgnet</label>
                 </div>
@@ -177,13 +177,11 @@
 
     <fieldset>
         <legend>Utsendelse</legend>
-        <div class="form-group">
-            <div class="col-sm-offset-1">
-                <div ng-repeat="(message,enabled) in messagetype">
-                    <div class="checkbox">
-                        <input id="messagetype-{{message}}" type="checkbox" ng-model="messagetype[message]" />
-                        <label for="messagetype-{{message}}">{{message}}</label>
-                    </div>
+        <div class="col-sm-offset-1">
+            <div ng-repeat="(message,enabled) in messagetype">
+                <div class="checkbox checkbox-primary">
+                    <input id="messagetype-{{message}}" type="checkbox" ng-model="messagetype[message]" />
+                    <label for="messagetype-{{message}}">{{message}}</label>
                 </div>
             </div>
         </div>
@@ -192,13 +190,11 @@
 
     <fieldset>
         <legend>Andre mottakere <span style="color: lightblue">(dynamisk generert fra profil)</span></legend>
-        <div class="form-group">
-            <div class="col-sm-offset-1">
-                <div ng-repeat="(recipient, enabled) in recipients">
-                    <div class="checkbox">
-                        <input id="recipient-{{recipient}}" type="checkbox" ng-model="recipients[recipient]" />
-                        <label for="recipient-{{recipient}}">{{recipient}}</label>
-                    </div>
+        <div class="col-sm-offset-1">
+            <div ng-repeat="(recipient, enabled) in recipients">
+                <div class="checkbox checkbox-primary">
+                    <input id="recipient-{{recipient}}" type="checkbox" ng-model="recipients[recipient]" />
+                    <label for="recipient-{{recipient}}">{{recipient}}</label>
                 </div>
             </div>
         </div>
@@ -207,13 +203,11 @@
 
     <fieldset>
         <legend>Motta oppgraderinger</legend>
-        <div class="form-group">
-            <div class="col-sm-offset-1">
-                <div ng-repeat="(msgUpdateType, enabled) in messageUpdate">
-                    <div class="checkbox">
-                        <input id="msgupdatetype-{{msgUpdateType}}" type="checkbox" ng-model="messageUpdate[msgUpdateType]" />
-                        <label for="msgupdatetype-{{msgUpdateType}}">{{msgUpdateType}}</label>
-                    </div>
+        <div class="col-sm-offset-1">
+            <div ng-repeat="(msgUpdateType, enabled) in messageUpdate">
+                <div class="checkbox checkbox-primary">
+                    <input id="msgupdatetype-{{msgUpdateType}}" type="checkbox" ng-model="messageUpdate[msgUpdateType]" />
+                    <label for="msgupdatetype-{{msgUpdateType}}">{{msgUpdateType}}</label>
                 </div>
             </div>
         </div>
@@ -227,7 +221,7 @@
                 <span><b>SMS</b></span>
                 <div ng-repeat="(smslevel, enabled) in messageDegradeSMS">
                     <div class="col-md-2">
-                        <div class="checkbox">
+                        <div class="checkbox checkbox-primary">
                             <input type="checkbox" id="messageDegradeSMS-{{smslevel}}" ng-model="messageDegradeSMS[smslevel]" /> <!-- Must seperate checkbox and label du to awesome-bootstrap-checkbox.css-->
                             <label for="messageDegradeSMS-{{smslevel}}">{{smslevel}}</label>
                         </div>
@@ -235,13 +229,13 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
 
+        <div class="form-group">
             <div class="col-sm-offset-1">
                 <span><b>Epost</b></span>
                 <div ng-repeat="(emaillevel, enabled) in messageDegradeEmail">
                     <div class="col-md-2">
-                        <div class="checkbox">
+                        <div class="checkbox checkbox-primary">
                             <input type="checkbox" id="messageDegradeEmail-{{emaillevel}}" ng-model="messageDegradeEmail[emaillevel]" /> <!-- Must seperate checkbox and label du to awesome-bootstrap-checkbox.css-->
                             <label for="messageDegradeEmail-{{emaillevel}}">{{emaillevel}}</label>
                         </div>
@@ -263,7 +257,9 @@
         </div>
         <div class="col-sm-offset-1">
             <span><b>Område</b></span>
-            <pre>{{currentCountyId}}</pre>
+            <div ng-repeat="council in selectedCouncilList">
+                <pre>{{council.FYLKENAVN}} {{council.KOMMNAVN}}</pre>
+            </div>
         </div>
         <div class="col-sm-offset-1">
             <span><b>Valgt periode</b></span>
