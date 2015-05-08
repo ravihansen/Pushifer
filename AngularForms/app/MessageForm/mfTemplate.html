@@ -1,19 +1,36 @@
 ﻿<form role="form" class="form-horizontal" ng-controller="mfController">
-    <h3>Registrer varsler</h3>
+    <h3>Abonnèr på naturfarevarsler</h3>
     <br />
 
     <fieldset>
-        <legend>Type varsel</legend>
-        <div class="form-group">
+        <legend>Varsel</legend>
+        Type: {{selectedWarningType}}
+        <!--<div class="form-group">
             <div class="col-sm-offset-1">
                 <span>
-                    <b>Flomvarsel</b>
-                    <a href="http://varsom.no/Flom/Varslings-Aktsomhetsniva/" target="_blank">
-                        &nbsp;
-                        <i style="color: blue" class="fa fa-info"></i>
-                    </a>
+                    <b>Type varsel</b>
+                    <div ng-repeat="type in warningType">
+                        <div class="col-md-2">
+                            <div class="radio radio-info">
+                                <input type="radio" name="selectedWarningType" ng-model="$parent.selectedWarningType" id="radio-{{$index}}" value="{{type.name}}" />
+                                <label for="radio-{{$index}}">{{type.name}}</label>
+                                <span>
+                                    <a href={{type.url}} target="_blank">
+                                        &nbsp;
+                                        <i style="color: blue" class="fa fa-info"></i>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </span>
-                <div ng-repeat="(floodLevel, enabled) in floodWarning">
+                
+            </div>
+        </div>-->
+        <div class="form-group" >
+            <div class="col-sm-offset-1">
+                <!--<p style="color: lightblue">{{floodWarning}}</p>-->
+                <div ng-repeat="(floodLevel, enabled) in floodWarning" ng-show="selectedWarningType == 'Flomvarsel'">
                     <div class="col-md-2">
                         <div class="checkbox checkbox-primary">
                             <input type="checkbox" id="flood{{floodLevel}}" ng-model="floodWarning[floodLevel]" /> <!-- Must seperate checkbox and label du to awesome-bootstrap-checkbox.css-->
@@ -22,20 +39,9 @@
                     </div>
                 </div>
                 <!--<p style="color: lightblue">{{floodWarning}}</p>-->
-            </div>
-        </div>
-        <br />
 
-        <div class="form-group">
-            <div class="col-sm-offset-1">
-                <span>
-                    <b>Jordskredvarsel</b>
-                    <a href="http://varsom.no/Jordskred/Varslingnivaer--skala/" target="_blank">
-                        &nbsp;
-                        <i style="color: blue" class="fa fa-info"></i>
-                    </a>
-                </span>
-                <div ng-repeat="(landslideLevel, enabled) in landslideWarning">
+                <!--<p style="color: lightblue">{{landslideWarning}}</p>-->
+                <div ng-repeat="(landslideLevel, enabled) in landslideWarning" ng-show="selectedWarningType == 'Jordskredvarsel'">
                     <div class="col-md-2">
                         <div class="checkbox checkbox-primary">
                             <input type="checkbox" id="landslide-{{landslideLevel}}" ng-model="landslideWarning[landslideLevel]" />
@@ -44,20 +50,9 @@
                     </div>
                 </div>
                 <!--<p style="color: lightblue">{{landslideWarning}}</p>-->
-            </div>
-        </div>
-        <br />
 
-        <div class="form-group">
-            <div class="col-sm-offset-1">
-                <span>
-                    <b>Snøskredvarsel</b>
-                    <a href="http://varsom.no/Snoskred/Skredskolen/Om-faregradene1/" target="_blank">
-                        &nbsp;
-                        <i style="color: blue" class="fa fa-info"></i>
-                    </a>
-                </span>
-                <div ng-repeat="(avalancheLevel, enabled) in avalancheWarning">
+                <!--<p style="color: lightblue">{{avalancheWarning}}</p>-->
+                <div ng-repeat="(avalancheLevel, enabled) in avalancheWarning" ng-show="selectedWarningType == 'Snøskredvarsel'">
                     <div class="col-md-2">
                         <div class="checkbox checkbox-primary">
                             <input type="checkbox" id="avalanche-{{avalancheLevel}}" ng-model="avalancheWarning[avalancheLevel]" />
@@ -68,7 +63,6 @@
                 <!--<p style="color: lightblue">{{avalancheWarning}}</p>-->
             </div>
         </div>
-        <br />
     </fieldset>
 
     <fieldset>
@@ -77,7 +71,7 @@
             <div class="row">
                 <div class="col-sm-offset-1">
                     <!-- fylke / kommune -->
-                    <div ng-show="enableRegions()">
+                    <div ng-show="selectedWarningType == 'Flomvarsel' || selectedWarningType == 'Jordskredvarsel'">
                         <div class="col-md-2">
                             <span><b>Fylke</b></span>
                             <div ng-repeat="county in counties">
@@ -101,13 +95,13 @@
                     </div>
 
                     <!-- varslingsregioner -->
-                    <div ng-show="enableAvalancheRegions()">
+                    <div ng-show="selectedWarningType == 'Snøskredvarsel'">
                         <div class="col-md-2">
                             <span><b>Varslingsregioner</b></span>
-                            <div ng-repeat="region in avalancheRegions">
+                            <div ng-repeat="(region, enabled) in avalancheRegions">
                                 <div class="checkbox checkbox-primary">
-                                    <input type="checkbox" id={{region.Id}} ng-model="avalancheRegions[region]" />
-                                    <label for={{region.Id}}> {{region.name}}</label>
+                                    <input type="checkbox" id={{Id}} ng-model="avalancheRegions[region]" />
+                                    <label for={{Id}}> {{name}}</label>
                                 </div>
                             </div>
                         </div>
@@ -188,7 +182,7 @@
         <br />
     </fieldset>
 
-    <fieldset>
+    <!--<fieldset>
         <legend>Andre mottakere <span style="color: lightblue">(dynamisk generert fra profil)</span></legend>
         <div class="col-sm-offset-1">
             <div ng-repeat="(recipient, enabled) in recipients">
@@ -199,10 +193,11 @@
             </div>
         </div>
         <br />
-    </fieldset>
+    </fieldset>-->
 
     <fieldset>
         <legend>Motta oppgraderinger</legend>
+        ge
         <div class="col-sm-offset-1">
             <div ng-repeat="(msgUpdateType, enabled) in messageUpdate">
                 <div class="checkbox checkbox-primary">
@@ -275,10 +270,10 @@
             <span><b>Utsendelse</b></span>
             <pre>{{messagetype}}</pre>
         </div>
-        <div class="col-sm-offset-1">
+        <!--<div class="col-sm-offset-1">
             <span><b>Andre mottakere</b></span>
             <pre>{{recipient}}</pre>
-        </div>
+        </div>-->
         <div class="col-sm-offset-1">
             <span><b>Motta oppgraderinger</b></span>
             <pre>{{messageUpdate}}</pre>

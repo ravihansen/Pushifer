@@ -44,6 +44,8 @@
     <script src="app/UserProfileForm/upController.js"></script>
     <script src="app/UserProfileForm/upDirective.js"></script>
     <!-- /application -->
+    
+
 </head>
 
 <body class="container">
@@ -54,7 +56,9 @@
             </div>
             <div class="col-md-2">
                 <div class="thumbnail">
-                    <img src="Images/SW_Logo.png" alt="Logo" />
+                    <!--<img src="Images/SW_Logo.png" alt="Logo" />-->
+                    <img src="Images/jess_logo.JPG" alt="Logo" />
+                    <!--<img src="Images/nils_logo.JPG" alt="Logo" />-->
                 </div>
             </div>
 
@@ -75,9 +79,16 @@
 
                 <ul class="nav navbar-nav">
                     <li><a ng-click="goToHome()"><i class="fa fa-home fa-fw"></i>&nbsp; Hjem</a></li>
-                    <li><a ng-click="goToAddNewMessage()"><i class="fa fa-pencil fa-fw"></i>&nbsp; Registrer varsel</a></li>
-                    <li><a ng-click="goToMessagesReport()"><i class="fa fa-book fa-fw"></i>&nbsp; Motatte varsel</a></li>
-                    <li><a ng-click="goToUserProfile()"><i class="fa fa-cog fa-fw"></i>&nbsp; Profil</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-pencil fa-fw"></i>&nbsp; Abonnèr på varsel<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ng-click="goToAddNewMessage('Flomvarsel')">Flomvarsel</a></li>
+                            <li><a ng-click="goToAddNewMessage('Jordskredvarsel')">Jordskredvarsel</a></li>
+                            <li><a ng-click="goToAddNewMessage('Snøskredvarsel')">Snøskredvarsel</a></li>
+                        </ul>
+                    </li>
+                    <li><a ng-click="goToMessagesReport()"><i class="fa fa-book fa-fw"></i>&nbsp; Tidligere motatte varsel</a></li>
+                    <li><a ng-click="goToUserProfile()"><i class="fa fa-cog fa-fw"></i>&nbsp; Brukerprofil</a></li>
 
                 </ul>
             </div>

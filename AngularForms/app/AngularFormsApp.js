@@ -23,10 +23,12 @@ angularFormsApp.config(function ($routeProvider) {
     });
 });
 
+
 angularFormsApp.controller("HomeController",
-    function ($scope, $location) {
-        $scope.goToAddNewMessage = function () {
+    function ($scope, $location, WarningType) {
+        $scope.goToAddNewMessage = function (value) {
             $location.path('/newMessageForm');
+            WarningType.addWarning(value);
         };
         $scope.goToMessagesReport = function () {
             $location.path('/newReportsForm');
@@ -39,3 +41,20 @@ angularFormsApp.controller("HomeController",
         }
     });
 
+angularFormsApp.service('WarningType', function () {
+    var warning = '';
+
+    var addWarning = function (name) {
+        warning = name;
+    }
+
+    var getWarning = function () {
+        return warning;
+    }
+
+    return {
+        addWarning: addWarning,
+        getWarning: getWarning
+    }
+}
+);

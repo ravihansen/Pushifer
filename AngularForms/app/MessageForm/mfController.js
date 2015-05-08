@@ -1,15 +1,33 @@
-﻿/// <reference path="C:\Users\ravi.NVE\Documents\Visual Studio 2013\Projects\AngularForms\AngularForms\Scripts/bootstrapmap.js" />
-/// <reference path="C:\Users\ravi.NVE\Documents\Visual Studio 2013\Projects\AngularForms\AngularForms\Scripts/bootstrapmap.js" />
-/// <reference path="C:\Users\ravi.NVE\Documents\Visual Studio 2013\Projects\AngularForms\AngularForms\Scripts/bootstrapmap.js" />
-/// <reference path="C:\Users\ravi.NVE\Documents\Visual Studio 2013\Projects\AngularForms\AngularForms\Scripts/bootstrapmap.js" />
-/// <reference path="C:\Users\ravi.NVE\Documents\Visual Studio 2013\Projects\AngularForms\AngularForms\Scripts/bootstrapmap.js" />
-angularFormsApp.controller('mfController',
-    function mfController($scope, AreaFactory, DataService) {
+﻿angularFormsApp.controller('mfController',
+    function mfController($scope, AreaFactory, DataService, WarningType) {
         $scope.message = DataService.message;
-
         $scope.editableMessage = angular.copy($scope.message);
 
         // -- Type varsel --
+
+        $scope.selectedWarningType = '';
+        $scope.$watch(function () { return WarningType.getWarning(); }, function (newValue, oldValue) {
+            console.log('hey, selectedWarningType has changed to ' + newValue);
+            $scope.selectedWarningType = newValue;
+
+        });
+
+
+        //$scope.warningType = [{
+        //    name: "Flomvarsel",
+        //    value: 01,
+        //    url: "http://varsom.no/Flom/Varslings-Aktsomhetsniva/"
+        //}, {
+        //    name: "Jordskredvarsel",
+        //    value: 02,
+        //    url: "http://varsom.no/Jordskred/Varslingnivaer--skala/"
+        //}, {
+        //    name: "Snøskredvarsel",
+        //    value: 03,
+        //    url: "http://varsom.no/Snoskred/Skredskolen/Om-faregradene1/"
+        //}];
+
+
         $scope.floodWarning = {
             // flomvarsel
             Gult: false,
@@ -31,31 +49,31 @@ angularFormsApp.controller('mfController',
             Rød: false
         };
 
-        $scope.enableRegions = function () {
-            for (var i in $scope.floodWarning) {
-                if ($scope.floodWarning[i]) {
-                    return true;
-                }
-            }
+        //$scope.enableRegions = function () {
+        //    for (var i in $scope.floodWarning) {
+        //        if ($scope.floodWarning[i]) {
+        //            return true;
+        //        }
+        //    }
 
-            for (var o in $scope.landslideWarning) {
-                if ($scope.landslideWarning[o]) {
-                    return true;
-                }
-            }
+        //    for (var o in $scope.landslideWarning) {
+        //        if ($scope.landslideWarning[o]) {
+        //            return true;
+        //        }
+        //    }
 
-            return false;
-        };
+        //    return false;
+        //};
 
-        $scope.enableAvalancheRegions = function () {
-            for (var o in $scope.avalancheWarning) {
-                if ($scope.avalancheWarning[o]) {
-                    return true;
-                }
-            }
+        //$scope.enableAvalancheRegions = function () {
+        //    for (var o in $scope.avalancheWarning) {
+        //        if ($scope.avalancheWarning[o]) {
+        //            return true;
+        //        }
+        //    }
 
-            return false;
-        };
+        //    return false;
+        //};
 
         //--
 
@@ -268,11 +286,11 @@ angularFormsApp.controller('mfController',
         $scope.startTime = now.setHours(8, 0, 0, 0);
         $scope.endTime = now.setHours(16, 0, 0, 0);
 
-        $scope.recipients = {
-            Brannsjef: false,
-            Lensmann: false,
-            Fylkesmann: false
-        };
+        //$scope.recipients = {
+        //    Brannsjef: false,
+        //    Lensmann: false,
+        //    Fylkesmann: false
+        //};
 
         $scope.messagetype = {
             SMS: false,
@@ -330,8 +348,8 @@ angularFormsApp.controller('mfController',
 
 angularFormsApp.factory('AreaFactory', ['$http',
   function ($http) {
-      var councilServiceUrl = "http://gis3.nve.no/map/rest/services/Mapservices/Administrasjon/MapServer/3/query?where=1%3D1&outFields=*&returnGeometry=false&f=pjson&callback=JSON_CALLBACK"
-
+      var councilServiceUrl = "http://gis3.nve.no/map/rest/services/Mapservices/Administrasjon/MapServer/3/query?where=1%3D1&outFields=*&returnGeometry=false&f=pjson&callback=JSON_CALLBACK";
+      var avalancheRegionsUrl = "http://gis.nve.no/ArcGIS/rest/services/Mapservices/seNorge_SQL/MapServer/35/query?where=omraadeid%3C50&&returnGeometry=false&outFields=*&f=pjson&callback=JSON_CALLBACK";
       var councils = {
           details: function () {
               return $http({
